@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  --color-cyber-black: #050505;
+  --color-cyber-gray: #121212;
+  --color-cyber-glass: rgba(18, 18, 18, 0.6);
+  --color-neon-purple: #a855f7;
+  --color-neon-blue: #3b82f6;
+  --color-luxury-gold: #fbbf24;
+}
+
+@theme {
+  --color-cyber-black: var(--color-cyber-black);
+  --color-cyber-gray: var(--color-cyber-gray);
+  --color-cyber-glass: var(--color-cyber-glass);
+  --color-neon-purple: var(--color-neon-purple);
+  --color-neon-blue: var(--color-neon-blue);
+  --color-luxury-gold: var(--color-luxury-gold);
+}
+
+body {
+  @apply bg-cyber-black text-gray-100 font-sans antialiased;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+  @apply min-h-screen;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-cyber-black;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-cyber-gray rounded-full border border-gray-800;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-700;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  @apply bg-cyber-glass backdrop-blur-md border border-white/10 shadow-xl;
+}
+
+.glass-card {
+  @apply bg-white/5 backdrop-blur-sm border border-white/5 hover:border-white/20 transition-all duration-300;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400;
+}
