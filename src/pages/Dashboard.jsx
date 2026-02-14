@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import StatsRow from '../components/dashboard/StatsRow';
 import AgentActionCenter from '../components/dashboard/AgentActionCenter';
 import DealPipeline from '../components/features/deals/DealPipeline';
@@ -6,6 +7,8 @@ import FeaturedProperties from '../components/features/properties/FeaturedProper
 import { Plus } from 'lucide-react';
 
 const Dashboard = () => {
+    const navigate = useNavigate();
+    
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
@@ -15,7 +18,10 @@ const Dashboard = () => {
                     <h1 className="text-3xl font-bold text-white">Dashboard</h1>
                     <p className="text-gray-400 mt-1">Welcome back, Agent. Market momentum is high today.</p>
                 </div>
-                <button className="bg-neon-purple hover:bg-neon-purple/80 text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(168,85,247,0.5)]">
+                <button 
+                    onClick={() => navigate('/new-listing')}
+                    className="bg-neon-purple hover:bg-neon-purple/80 text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(168,85,247,0.5)]"
+                >
                     <Plus size={18} />
                     <span>New Listing</span>
                 </button>
