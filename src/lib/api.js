@@ -1,14 +1,20 @@
-const API_BASE_URL = 'http://localhost:8000/api/properties';
+const API_BASE_URL = 'http://localhost:8003/api/properties';
+const API_KEY = 'cyber-broker-secret-key-2024';
+
+const headers = {
+  'Content-Type': 'application/json',
+  'X-API-Key': API_KEY,
+};
 
 export const api = {
   async getAll() {
-    const response = await fetch(API_BASE_URL);
+    const response = await fetch(API_BASE_URL, { headers });
     if (!response.ok) throw new Error('Failed to fetch properties');
     return response.json();
   },
 
   async getById(id) {
-    const response = await fetch(`${API_BASE_URL}/${id}`);
+    const response = await fetch(`${API_BASE_URL}/${id}`, { headers });
     if (!response.ok) throw new Error('Failed to fetch property');
     return response.json();
   },
@@ -16,7 +22,7 @@ export const api = {
   async create(property) {
     const response = await fetch(API_BASE_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify(property),
     });
     if (!response.ok) throw new Error('Failed to create property');
@@ -26,7 +32,7 @@ export const api = {
   async update(id, updates) {
     const response = await fetch(`${API_BASE_URL}/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify(updates),
     });
     if (!response.ok) throw new Error('Failed to update property');
@@ -36,6 +42,7 @@ export const api = {
   async delete(id) {
     const response = await fetch(`${API_BASE_URL}/${id}`, {
       method: 'DELETE',
+      headers,
     });
     if (!response.ok) throw new Error('Failed to delete property');
     return response.json();
