@@ -14,12 +14,25 @@ dist-ssr
 
 # Backend
 cyber-broker-backend/.env
+cyber-broker-backend/.env.local
 cyber-broker-backend/venv/
 cyber-broker-backend/**/__pycache__/
 *.pyc
-backend.log
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+build/
+backend*.log
 
-# Editor directories and files
+# Frontend
+.env
+.env.local
+.env.*.local
+
+# IDE
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -29,3 +42,9 @@ backend.log
 *.njsproj
 *.sln
 *.sw?
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
