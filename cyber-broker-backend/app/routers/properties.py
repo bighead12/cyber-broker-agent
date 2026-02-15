@@ -15,7 +15,11 @@ def serialize_property(property) -> dict:
 
 
 @router.get(
-    "", response_model=List[PropertyResponse], dependencies=[Depends(verify_api_key)]
+    "",
+    response_model=List[PropertyResponse],
+    dependencies=[Depends(verify_api_key)],
+    summary="Get all properties",
+    description="Retrieve a list of all properties from MongoDB. Requires API key authentication.",
 )
 async def get_properties():
     db = get_database()
@@ -24,7 +28,11 @@ async def get_properties():
 
 
 @router.post(
-    "", response_model=PropertyResponse, dependencies=[Depends(verify_api_key)]
+    "",
+    response_model=PropertyResponse,
+    dependencies=[Depends(verify_api_key)],
+    summary="Create a new property",
+    description="Add a new property to the database. Requires API key authentication.",
 )
 async def create_property(property: PropertyCreate):
     db = get_database()
@@ -38,6 +46,8 @@ async def create_property(property: PropertyCreate):
     "/{property_id}",
     response_model=PropertyResponse,
     dependencies=[Depends(verify_api_key)],
+    summary="Get a property by ID",
+    description="Retrieve a single property by its MongoDB ObjectId. Requires API key authentication.",
 )
 async def get_property(property_id: str):
     db = get_database()
@@ -56,6 +66,8 @@ async def get_property(property_id: str):
     "/{property_id}",
     response_model=PropertyResponse,
     dependencies=[Depends(verify_api_key)],
+    summary="Update a property",
+    description="Update an existing property by its ID. Requires API key authentication.",
 )
 async def update_property(property_id: str, property: PropertyUpdate):
     db = get_database()
@@ -76,7 +88,12 @@ async def update_property(property_id: str, property: PropertyUpdate):
     return serialize_property(updated)
 
 
-@router.delete("/{property_id}", dependencies=[Depends(verify_api_key)])
+@router.delete(
+    "/{property_id}",
+    dependencies=[Depends(verify_api_key)],
+    summary="Delete a property",
+    description="Delete a property by its ID. Requires API key authentication.",
+)
 async def delete_property(property_id: str):
     db = get_database()
     try:
