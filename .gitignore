@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# Backend
+cyber-broker-backend/.env
+cyber-broker-backend/venv/
+cyber-broker-backend/**/__pycache__/
+*.pyc
+backend.log
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
