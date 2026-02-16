@@ -94,13 +94,22 @@ jobs:
     needs: build-docker
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: Trigger Koyeb to pull from Docker Hub
+      - name: Deploy to Koyeb with environment variables
         run: |
-          curl -X POST "https://app.koyeb.com/v1/deployments" \
+          curl -X PUT "https://app.koyeb.com/v1/apps/${{ secrets.KOYEB_APP_ID }}" \
             -H "Authorization: Bearer ${{ secrets.KOYEB_API_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d '{
-              "app_id": "${{ secrets.KOYEB_APP_ID }}"
+              "definition": {
+                "name": "cyber-broker-backend",
+                "docker": {
+                  "image": "${{ secrets.DOCKER_USERNAME }}/cyber-broker-backend:latest"
+                },
+                "environment": [
+                  {"key": "MONGODB_URL", "value": "${{ secrets.MONGODB_URL }}", "type": "secret"},
+                  {"key": "API_KEY", "value": "${{ secrets.API_KEY }}", "type": "secret"}
+                ]
+              }
             }'
 
   # === DEPLOY FRONTEND PRODUCTION (Main only) ===
