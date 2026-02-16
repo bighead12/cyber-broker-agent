@@ -29,8 +29,8 @@ export const options = {
   },
 };
 
-const BASE_URL = __ENV.BASE_URL || 'http://localhost:8000';
-const API_KEY = __ENV.API_KEY || 'test-api-key';
+const BASE_URL = typeof __ENV !== 'undefined' ? __ENV.BASE_URL : 'http://localhost:8000';
+const API_KEY = typeof __ENV !== 'undefined' ? __ENV.API_KEY : 'test-api-key';
 
 const headers = {
   'Content-Type': 'application/json',
@@ -97,7 +97,6 @@ export function handleSummary(data) {
 
 function textSummary(data, opts) {
   const indent = opts.indent || '';
-  const enableColors = opts.enableColors || false;
 
   let output = `${indent}Test Summary:\n`;
   output += `${indent}==============\n`;
