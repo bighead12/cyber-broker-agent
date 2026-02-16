@@ -3,8 +3,16 @@ import mongomock
 from unittest.mock import patch
 from httpx import AsyncClient, ASGITransport
 from app.main import app
+from app.config import settings
 
 API_KEY = "cyber-broker-secret-key-2024"
+
+
+@pytest.fixture(autouse=True)
+def setup_test_env():
+    settings.API_KEY = API_KEY
+    yield
+    settings.API_KEY = ""
 
 
 @pytest.fixture
