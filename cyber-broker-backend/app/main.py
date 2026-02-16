@@ -26,6 +26,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        # Local development
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:5175",
@@ -34,6 +35,10 @@ app.add_middleware(
         "http://localhost:5178",
         "http://localhost:5179",
         "http://localhost:5180",
+        # Vercel (production)
+        "https://cyber-broker-agent.vercel.app",
+        # Fly.io (production)
+        "https://cyber-broker-backend.fly.dev",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -65,12 +70,12 @@ def custom_openapi():
 
     openapi_schema["servers"] = [
         {
-            "url": "http://localhost:8003",
+            "url": "http://localhost:8000",
             "description": "Local development server",
         },
         {
-            "url": "https://api.example.com",
-            "description": "Production server",
+            "url": "https://cyber-broker-backend.fly.dev",
+            "description": "Production server (Fly.io)",
         },
     ]
 
