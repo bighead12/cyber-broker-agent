@@ -60,7 +60,7 @@ def custom_openapi():
             "description": "Local development server",
         },
         {
-            "url": "https://cyber-broker-backend.koyeb.app",
+            "url": "https://ugly-donna-chenfeis-1e1e5015.koyeb.app",
             "description": "Production server (Koyeb)",
         },
     ]
