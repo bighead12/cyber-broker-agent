@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/properties';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ugly-donna-chenfeis-1e1e5015.koyeb.app/api/properties';
 const API_KEY = import.meta.env.VITE_API_KEY || 'cyber-broker-secret-key-2024';
 
 const headers = {
