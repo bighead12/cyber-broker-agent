@@ -51,15 +51,10 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install MongoDB
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y mongodb
-
       - name: Start MongoDB
-        run: |
-          sudo systemctl start mongod
-          sleep 2
+        uses: supercharge/mongodb-github-action@1.10.0
+        with:
+          mongodb-version: '7.0'
 
       - name: Install backend dependencies
         run: |
