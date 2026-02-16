@@ -46,16 +46,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.10.0
         with:
           mongodb-version: '7.0'
           mongodb-port: 27017
+
+      - name: Wait for MongoDB
+        run: sleep 10
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
       - name: Install backend dependencies
         run: |
