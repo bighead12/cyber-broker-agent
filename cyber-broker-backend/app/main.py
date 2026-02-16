@@ -37,8 +37,8 @@ app.add_middleware(
         "http://localhost:5180",
         # Vercel (production)
         "https://cyber-broker-agent.vercel.app",
-        # Fly.io (production)
-        "https://cyber-broker-backend.fly.dev",
+        # Oracle Cloud VM (replace with your VM IP after setup)
+        # Example: "http://123.45.67.89:8000",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -74,8 +74,8 @@ def custom_openapi():
             "description": "Local development server",
         },
         {
-            "url": "https://cyber-broker-backend.fly.dev",
-            "description": "Production server (Fly.io)",
+            "url": "http://<YOUR_VM_IP>:8000",
+            "description": "Production server (Oracle Cloud)",
         },
     ]
 
