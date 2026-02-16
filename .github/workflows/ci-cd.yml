@@ -81,7 +81,7 @@ jobs:
           docker tag app:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/cyber-broker-backend:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/cyber-broker-backend:latest
 
-  # === DEPLOY BACKEND TO ORACLE CLOUD (Main only) ===
+  # === DEPLOY BACKEND TO KOYEB (Main only) ===
   deploy-backend:
     runs-on: ubuntu-latest
     needs: build-docker
@@ -89,22 +89,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Deploy to Oracle Cloud VM
-        uses: appleboy/ssh-action@v1.0.0
+      - name: Deploy to Koyeb
+        uses: koyeb/koyeb-deploy@v1
         with:
-          host: ${{ secrets.ORACLE_VM_HOST }}
-          username: opc
-          key: ${{ secrets.ORACLE_SSH_KEY }}
-          script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/cyber-broker-backend:latest
-            docker stop cyber-broker || true
-            docker rm cyber-broker || true
-            docker run -d --name cyber-broker \
-              -p 8000:8000 \
-              -e MONGODB_URL='${{ secrets.MONGODB_URL }}' \
-              -e API_KEY='${{ secrets.API_KEY }}' \
-              --restart unless-stopped \
-              ${{ secrets.DOCKER_USERNAME }}/cyber-broker-backend:latest
+          app_name: cyber-broker-backend
+          docker_image: ${{ secrets.DOCKER_USERNAME }}/cyber-broker-backend:latest
+          api_token: ${{ secrets.KOYEB_API_TOKEN }}
+          environment_variables: |
+            MONGODB_URL=${{ secrets.MONGODB_URL }}
+            API_KEY=${{ secrets.API_KEY }}
 
   # === DEPLOY FRONTEND PRODUCTION (Main only) ===
   deploy-frontend:

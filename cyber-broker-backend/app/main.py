@@ -37,8 +37,8 @@ app.add_middleware(
         "http://localhost:5180",
         # Vercel (production)
         "https://cyber-broker-agent.vercel.app",
-        # Oracle Cloud VM (replace with your VM IP after setup)
-        # Example: "http://123.45.67.89:8000",
+        # Koyeb (replace with your Koyeb app URL after deployment)
+        # Example: "https://cyber-broker-backend.koyeb.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -74,8 +74,8 @@ def custom_openapi():
             "description": "Local development server",
         },
         {
-            "url": "http://<YOUR_VM_IP>:8000",
-            "description": "Production server (Oracle Cloud)",
+            "url": "https://cyber-broker-backend.koyeb.app",
+            "description": "Production server (Koyeb)",
         },
     ]
 
