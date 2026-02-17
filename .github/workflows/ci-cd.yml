@@ -64,20 +64,26 @@ jobs:
           sudo apt-get update
           sudo apt-get install k6
 
+      - name: Start MongoDB container
+        run: docker run -d --network host --name mongodb mongo:7.0
+
+      - name: Wait for MongoDB
+        run: sleep 20
+
       - name: Start server and run k6 test
         env:
           API_KEY: test-api-key
-          USE_MONGOMOCK: "true"
+          MONGODB_URL: mongodb://127.0.0.1:27017
         run: |
           cd cyber-broker-backend
           
           # Start server in background
-          nohup python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &
+          nohup python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 > server.log 2>&1 &
           SERVER_PID=$!
           
           # Wait for server to be ready
           for i in {1..30}; do
-            if curl -s http://localhost:8000/health > /dev/null; then
+            if curl -s http://127.0.0.1:8000/health > /dev/null; then
               echo "Server ready"
               break
             fi
@@ -85,7 +91,7 @@ jobs:
           done
           
           # Verify server started
-          curl -s http://localhost:8000/health || (echo "Server failed to start"; cat server.log; kill $SERVER_PID; exit 1)
+          curl -s http://127.0.0.1:8000/health || (echo "Server failed to start"; cat server.log; kill $SERVER_PID; exit 1)
           
           # Run k6 test
           cd ..

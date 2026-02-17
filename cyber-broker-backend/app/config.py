@@ -6,7 +6,6 @@ class Settings(BaseSettings):
     API_KEY: str = ""
     DATABASE_NAME: str = "cyber_broker"
     DATABASE_COLLECTION: str = "properties"
-    USE_MONGOMOCK: bool = False
 
     class Config:
         env_file = ".env"
