@@ -64,16 +64,13 @@ export default function () {
   response = http.post(
     `${BASE_URL}/api/properties`,
     JSON.stringify({
-      address: '123 Performance Test St',
-      city: 'Test City',
-      state: 'TS',
-      zipCode: '12345',
-      price: 100000,
-      bedrooms: 3,
-      bathrooms: 2,
-      sqft: 1500,
-      propertyType: 'house',
-      listingStatus: 'active',
+      title: '123 Performance Test St',
+      location: 'Test City, TS 12345',
+      price: '100000',
+      beds: 3,
+      baths: 2.0,
+      sqft: '1500',
+      status: 'active',
     }),
     { headers }
   );
