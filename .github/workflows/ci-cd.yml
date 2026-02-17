@@ -46,27 +46,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Start MongoDB
-        run: docker run -d --name mongodb -p 27017:27017 mongo:7.0
-
-      - name: Wait for MongoDB
-        run: |
-          sleep 15
-          for i in {1..30}; do
-            if docker exec mongodb mongosh --eval "db.adminCommand('ping')" > /dev/null 2>&1; then
-              echo "MongoDB is ready"
-              break
-            fi
-            echo "Waiting for MongoDB... ($i)"
-            sleep 2
-          done
-
-      - name: Verify MongoDB is up
-        run: docker exec mongodb mongosh --eval "db.adminCommand('ping')"
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -79,8 +58,8 @@ jobs:
 
       - name: Start backend server
         env:
-          MONGODB_URL: mongodb://localhost:27017
           API_KEY: test-api-key
+          USE_MONGOMOCK: "true"
         run: |
           cd cyber-broker-backend
           nohup python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &

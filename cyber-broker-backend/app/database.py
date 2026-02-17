@@ -1,3 +1,4 @@
+import mongomock
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.config import settings
 
@@ -7,6 +8,12 @@ db = None
 
 async def connect_to_mongo():
     global client, db
+    if settings.USE_MONGOMOCK:
+        client = mongomock.MongoClient()
+        db = client[settings.DATABASE_NAME]
+        print("Connected to MongoDB (mongomock)")
+        return
+
     if not settings.MONGODB_URL:
         raise RuntimeError("MONGODB_URL environment variable is not set")
     client = AsyncIOMotorClient(settings.MONGODB_URL)
