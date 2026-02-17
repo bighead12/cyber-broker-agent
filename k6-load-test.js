@@ -28,6 +28,8 @@ const headers = {
   'X-API-Key': API_KEY,
 };
 
+console.log(`Testing with BASE_URL=${BASE_URL}, API_KEY=${API_KEY}`);
+
 export default function () {
   let response;
   let success;
@@ -75,6 +77,7 @@ export default function () {
     }),
     { headers }
   );
+  console.log(`POST /api/properties: status=${response.status}, body=${response.body}`);
   success = check(response, {
     'create property status is 200 or 201': (r) => {
       if (r.status !== 200 && r.status !== 201) {
