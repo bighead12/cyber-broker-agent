@@ -83,11 +83,9 @@ jobs:
           API_KEY: test-api-key
         run: |
           cd cyber-broker-backend
-          python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &
-          sleep 10
-
-      - name: Check server logs
-        run: cat cyber-broker-backend/server.log || true
+          nohup python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &
+          disown
+          sleep 15
 
       - name: Verify server is running
         run: curl -s http://localhost:8000/health || (echo "Server failed to start"; cat cyber-broker-backend/server.log; exit 1)
