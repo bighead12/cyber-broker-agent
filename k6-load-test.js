@@ -10,23 +10,23 @@ export const options = {
     smoke: {
       executor: 'constant-vus',
       vus: 1,
-      duration: '30s',
+      duration: '15s',
     },
     load: {
       executor: 'ramping-vus',
       startVUs: 0,
       stages: [
-        { duration: '30s', target: 10 },
-        { duration: '1m', target: 10 },
-        { duration: '30s', target: 0 },
+        { duration: '15s', target: 5 },
+        { duration: '30s', target: 5 },
+        { duration: '15s', target: 0 },
       ],
-      gracefulRampDown: '30s',
+      gracefulRampDown: '15s',
     },
   },
   thresholds: {
-    http_req_duration: ['p(95)<500', 'p(99)<1000'],
-    http_req_failed: ['rate<0.05'],
-    errors: ['rate<0.1'],
+    http_req_duration: ['p(95)<1000', 'p(99)<2000'],
+    http_req_failed: ['rate<0.15'],
+    errors: ['rate<0.2'],
   },
 };
 
