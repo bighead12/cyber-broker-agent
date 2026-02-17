@@ -58,9 +58,14 @@ export default function () {
 
   response = http.get(`${BASE_URL}/api/properties`, { headers });
   success = check(response, {
-    'get properties status is 200': (r) => r.status === 200,
+    'get properties status is 200': (r) => {
+      if (r.status !== 200) {
+        console.log(`GET /api/properties failed: status=${r.status}, body=${r.body}`);
+      }
+      return r.status === 200;
+    },
     'get properties response time < 500ms': (r) => r.timings.duration < 500,
-    'get properties returns array': (r) => Array.isArray(r.json()),
+    'get properties returns array': (r) => r.status === 200 && Array.isArray(r.json()),
   });
   errorRate.add(!success);
 
@@ -81,8 +86,13 @@ export default function () {
     { headers }
   );
   success = check(response, {
-    'create property status is 200 or 201': (r) => r.status === 200 || r.status === 201,
-    'create property response time < 500ms': (r) => r.timings.duration < 500,
+    'create property status is 200 or 201': (r) => {
+      if (r.status !== 200 && r.status !== 201) {
+        console.log(`POST /api/properties failed: status=${r.status}, body=${r.body}`);
+      }
+      return r.status === 200 || r.status === 201;
+    },
+    'create property response time < 500ms': (r) => (r.status === 200 || r.status === 201) ? r.timings.duration < 500 : true,
   });
   errorRate.add(!success);
 
