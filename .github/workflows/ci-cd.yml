@@ -56,26 +56,43 @@ jobs:
           cd cyber-broker-backend
           pip install -r requirements.txt
 
-      - name: Start backend server
+      - name: Install k6
+        run: |
+          sudo gpg -k
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6
+
+      - name: Start server and run k6 test
         env:
           API_KEY: test-api-key
           USE_MONGOMOCK: "true"
         run: |
           cd cyber-broker-backend
+          
+          # Start server in background
           nohup python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &
-          disown
-          sleep 15
-
-      - name: Verify server is running
-        run: curl -s http://localhost:8000/health || (echo "Server failed to start"; cat cyber-broker-backend/server.log; exit 1)
-
-      - name: Run k6 load test
-        uses: grafana/k6-action@v0.3.0
-        with:
-          filename: k6-load-test.js
-          env: |
-            BASE_URL=http://localhost:8000
-            API_KEY=test-api-key
+          SERVER_PID=$!
+          
+          # Wait for server to be ready
+          for i in {1..30}; do
+            if curl -s http://localhost:8000/health > /dev/null; then
+              echo "Server ready"
+              break
+            fi
+            sleep 1
+          done
+          
+          # Verify server started
+          curl -s http://localhost:8000/health || (echo "Server failed to start"; cat server.log; kill $SERVER_PID; exit 1)
+          
+          # Run k6 test
+          cd ..
+          k6 run k6-load-test.js
+          
+          # Cleanup
+          kill $SERVER_PID || true
 
   # === PREVIEW DEPLOYMENT (PRs) ===
   preview:
