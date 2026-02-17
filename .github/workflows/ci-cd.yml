@@ -50,13 +50,10 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.10.0
-        with:
-          mongodb-version: '7.0'
-          mongodb-port: 27017
+        run: docker run -d --name mongodb -p 27017:27017 mongo:7.0
 
       - name: Wait for MongoDB
-        run: sleep 10
+        run: sleep 15
 
       - name: Set up Python
         uses: actions/setup-python@v5
