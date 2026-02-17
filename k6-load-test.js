@@ -14,9 +14,9 @@ export const options = {
     },
   },
   thresholds: {
-    http_req_duration: ['p(95)<2000'],
-    http_req_failed: ['rate<0.5'],
-    errors: ['rate<0.5'],
+    http_req_duration: ['p(95)<500'],
+    http_req_failed: ['rate<0.01'],
+    errors: ['rate<0.01'],
   },
 };
 
@@ -27,8 +27,6 @@ const headers = {
   'Content-Type': 'application/json',
   'X-API-Key': API_KEY,
 };
-
-console.log(`Testing with BASE_URL=${BASE_URL}, API_KEY=${API_KEY}`);
 
 export default function () {
   let response;
@@ -74,15 +72,9 @@ export default function () {
     }),
     { headers }
   );
-  console.log(`POST /api/properties: status=${response.status}, body=${response.body}`);
   success = check(response, {
-    'create property status is 200 or 201': (r) => {
-      if (r.status !== 200 && r.status !== 201) {
-        console.log(`POST /api/properties failed: status=${r.status}, body=${r.body}`);
-      }
-      return r.status === 200 || r.status === 201;
-    },
-    'create property response time < 500ms': (r) => (r.status === 200 || r.status === 201) ? r.timings.duration < 500 : true,
+    'create property status is 200 or 201': (r) => r.status === 200 || r.status === 201,
+    'create property response time < 500ms': (r) => r.timings.duration < 500,
   });
   errorRate.add(!success);
 
