@@ -21,7 +21,7 @@ export const options = {
 };
 
 const BASE_URL = __ENV.BASE_URL || 'http://127.0.0.1:8000';
-const API_KEY = __ENV.API_KEY || 'test-api-key';
+const API_KEY = __ENV.API_KEY || 'cyber-broker-secret-key-2024';
 
 const headers = {
   'Content-Type': 'application/json',
